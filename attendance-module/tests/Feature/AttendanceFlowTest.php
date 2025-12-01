@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace Tests\Feature;
 
-use App\Models\Attendance;
 use App\Models\TrainingSession;
 use App\Services\QrTokenService;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Str;
 use Tests\TestCase;
 
 class AttendanceFlowTest extends TestCase
@@ -18,7 +19,13 @@ class AttendanceFlowTest extends TestCase
     public function trainee_can_check_in_with_valid_qr_token(): void
     {
         $this->be($user = $this->mockLmsUser());
-        $session = TrainingSession::factory()->create([
+        $session = TrainingSession::create([
+            'lms_session_id' => (string) Str::uuid(),
+            'title' => 'Demo Session',
+            'mode' => 'remote',
+            'lat' => 0.0,
+            'lng' => 0.0,
+            'geo_radius_m' => 100,
             'starts_at' => now()->subMinutes(5),
             'ends_at' => now()->addHour(),
         ]);
@@ -40,10 +47,12 @@ class AttendanceFlowTest extends TestCase
         ]);
     }
 
-    protected function mockLmsUser()
+    protected function mockLmsUser(): Authenticatable
     {
-        return new class {
-            public string $lms_id = 'user-123';
+        return new class extends Authenticatable {
+            public $id = 1;
+            public $lms_id = 'user-123';
+            protected $guarded = [];
         };
     }
 }

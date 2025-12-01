@@ -12,11 +12,12 @@ class TrainingSessionSeeder extends Seeder
 {
     public function run(): void
     {
-        TrainingSession::factory()->create([
+        TrainingSession::create([
             'lms_session_id' => (string) Str::uuid(),
             'title' => 'Weekly Lab',
             'mode' => 'hybrid',
-            'location' => ['lat' => 25.2048, 'lng' => 55.2708],
+            'lat' => 25.2048,
+            'lng' => 55.2708,
             'geo_radius_m' => 150,
             'starts_at' => now()->addHour(),
             'ends_at' => now()->addHours(3),

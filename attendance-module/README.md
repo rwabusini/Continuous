@@ -1,6 +1,6 @@
-# Attendance Module (Laravel)
+# Attendance Module (Laravel 7 / PHP 7.4)
 
-This module implements the hybrid attendance strategy discussed (ephemeral QR + remote fallback + presence beacons) and is ready to drop into a Laravel application that already relies on an LMS for identity.
+This module implements the hybrid attendance strategy discussed (ephemeral QR + remote fallback + presence beacons) and targets Laravel **7.x** running on PHP **7.4**. It does not rely on Laravel 8+ features (model factories, request helpers, etc.), so it can be dropped into legacy apps that already use the LMS only for identity.
 
 ## Contents
 
@@ -14,7 +14,7 @@ This module implements the hybrid attendance strategy discussed (ephemeral QR + 
 
 1. Copy the `attendance-module` contents into your Laravel project.
 2. Register the middleware in `app/Http/Kernel.php` and routes in `routes/web.php`.
-3. Publish the JavaScript module via your bundler (Vite/Mix) and include it where needed.
+3. Publish the JavaScript module via Laravel Mix (or your existing asset pipeline) and include it where needed.
 4. Run migrations and seeders:
 
 ```bash

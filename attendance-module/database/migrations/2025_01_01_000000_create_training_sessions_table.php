@@ -14,7 +14,8 @@ return new class extends Migration {
             $table->uuid('lms_session_id')->unique();
             $table->string('title');
             $table->enum('mode', ['onsite', 'remote', 'hybrid'])->default('hybrid');
-            $table->point('location')->nullable();
+            $table->decimal('lat', 10, 7)->nullable();
+            $table->decimal('lng', 10, 7)->nullable();
             $table->unsignedInteger('geo_radius_m')->default(100);
             $table->timestamp('starts_at');
             $table->timestamp('ends_at');

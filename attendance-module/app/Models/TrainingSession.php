@@ -4,27 +4,24 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use App\Casts\PointCast;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class TrainingSession extends Model
 {
-    use HasFactory;
 
     protected $fillable = [
         'lms_session_id',
         'title',
         'mode',
-        'location',
+        'lat',
+        'lng',
         'geo_radius_m',
         'starts_at',
         'ends_at',
     ];
 
     protected $casts = [
-        'location' => PointCast::class,
         'starts_at' => 'datetime',
         'ends_at' => 'datetime',
     ];

@@ -30,9 +30,9 @@ class AttendanceController extends Controller
             ],
             [
                 'mode' => $token->mode,
-                'lat' => $request->float('lat'),
-                'lng' => $request->float('lng'),
-                'geo_confidence' => $request->float('geo_confidence', 0),
+                'lat' => $this->toFloat($request->input('lat')),
+                'lng' => $this->toFloat($request->input('lng')),
+                'geo_confidence' => $this->toFloat($request->input('geo_confidence'), 0.0) ?? 0.0,
                 'ip_hash' => hash('sha256', $request->ip()),
                 'checked_in_at' => now(),
             ]
@@ -78,12 +78,28 @@ class AttendanceController extends Controller
         ])->firstOrFail();
 
         $attendance->markBeacon([
-            'missed' => $request->boolean('missed'),
-            'lat' => $request->float('lat'),
-            'lng' => $request->float('lng'),
-            'geo_confidence' => $request->float('geo_confidence'),
+            'missed' => $this->toBoolean($request->input('missed')),
+            'lat' => $this->toFloat($request->input('lat')),
+            'lng' => $this->toFloat($request->input('lng')),
+            'geo_confidence' => $this->toFloat($request->input('geo_confidence')),
         ]);
 
         return response()->json(['status' => 'ok']);
+    }
+
+    private function toFloat($value, $default = null): ?float
+    {
+        if ($value === null || $value === '') {
+            return $default;
+        }
+
+        return (float) $value;
+    }
+
+    private function toBoolean($value): bool
+    {
+        $bool = filter_var($value, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
+
+        return $bool !== null ? $bool : false;
     }
 }
